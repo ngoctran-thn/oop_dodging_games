@@ -8,7 +8,8 @@ public class Car extends JFrame {
         PlayGround playGround = new PlayGround();
         app.add(playGround);
         app.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        app.setSize(500,720);
+        app.setSize(600,720);
         app.setVisible(true);
+
     }
 }

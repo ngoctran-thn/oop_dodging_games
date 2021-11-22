@@ -6,72 +6,113 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.Timer;
 
 public class PlayGround extends JPanel implements ActionListener, KeyListener {
     private int space;
-    private int width = 80;
-    private int height =70;
+    private int width = 40;// chieu rong cua hinh vuong
+    private int height =35;// chieu cao cua hinh vuong
     private int speed;
-    private int WIDTH = 500;
-    private int HEIGHT= 700;
-    private int move = 20;
+    private int WIDTH = 600;// chieu rong cua frame
+    private int HEIGHT= 700;// chieu cao cua frame
+    private int move = 25;
     private int count = 1;
     private ArrayList <Rectangle> ocar;
+    private ArrayList <Triangle> ocar1;
     private Rectangle car;
     private Random rand;
     Timer t;
 
-
+    Triangle_Shape triangleShape = new Triangle_Shape(new Point2D.Double(440, 200),
+            new Point2D.Double(485, 290), new Point2D.Double(395, 290));
     public PlayGround(){
-        t = new Timer(20,this);
+        t = new Timer(3,this);
         rand = new Random();
         ocar = new ArrayList<Rectangle>();
+        ocar1 = new ArrayList<Triangle>();
         car = new Rectangle(WIDTH/2-90,HEIGHT-100,width,height);
-        space =300;
-        speed = 2;
+        space =100;
+        speed = 1;
         addKeyListener(this);
         setFocusable(true);
-        addOwnCars(true);
-        addOwnCars(true);
-        addOwnCars(true);
+        int number = rand.nextInt(4);
+        // random 0->4 : 1,2,3,4 mean true(run) . 0 mean false
+        addOwnCars(number);
+        addOwnCars(number);
+        addOwnCars(number);
+        addOwnCars(number);
+        addOwnCars(number);
+        addOwnCars(number);
+        addOwnCars(number);
+        addOwnCars(number);
+
+
         t.start();
     }
-    public void addOwnCars(boolean first){
-        int positionx = rand.nextInt()%2;
+    public void addOwnCars(int number){
+        int positionx = rand.nextInt(20);
         int x = 0;
         int y = 0;
         int Height =height;
         int Width =width;
-        if(positionx == 0){
-            x = WIDTH/2-90;
+        if(positionx == 0 || positionx == 20){
+            x = WIDTH/10;
         }
-        else{
-            x=WIDTH/2+10;
+        else if (positionx == 1 || positionx == 19){
+            x = 2*WIDTH/10;
         }
-        if(first){
+        else if(positionx == 2 || positionx == 18){
+            x= 3*WIDTH/10;
+        }
+        else if(positionx == 3 || positionx == 17){
+            x= 4*WIDTH/10;
+        }
+        else if(positionx == 4 || positionx == 16){
+            x= 5*WIDTH/10;
+        }
+        else if(positionx == 5 || positionx == 15){
+            x= 6*WIDTH/10;
+        }
+        else if(positionx == 6|| positionx == 14){
+            x= 7*WIDTH/10;
+        }
+        else if(positionx == 7 || positionx == 13){
+            x= 8*WIDTH/10;
+        }
+        else if(positionx == 8 || positionx == 12){
+            x= 9*WIDTH/10 -5;
+        }
+        else {
+            x = WIDTH/10 + 5;
+        }
+
+        if(number == 0||number == 1|| number==2){
             ocar.add(new Rectangle(x,y-100-(ocar.size()*space), Width, Height));
         }
         else{
-            ocar.add( new Rectangle(x,ocar.get(ocar.size()-1).y-300,Width,Height) );
+            //ocar.add( new Rectangle(x,ocar.get(ocar.size()-1).y, Width, Height) );
+           ocar1.add(new Triangle(x,y-100-(ocar1.size()*space), x+Width,y-100-(ocar1.size()*space),(x+Width)/2,y-100-(ocar1.size()*space)-Height));
         }
     }
     public void paintComponent(Graphics g){
         super.paintComponents(g);
-        g.setColor(Color.cyan);
+        g.setColor(Color.black);
         g.fillRect(0,0,WIDTH,HEIGHT );
-        g.setColor(Color.gray);
-        g.fillRect(WIDTH/2-100, 0, 200,HEIGHT);
         g.setColor(Color.red);
         g.fillRect(car.x,car.y,car.width,car.height);
-        g.setColor(Color.blue);
-        g.drawLine(WIDTH/2,0,WIDTH/2,HEIGHT);
+        g.setColor(Color.MAGENTA);
+        g.drawRoundRect(110, 200, 90, 90, 200, 200);
+        g.drawRect(255,200,90,90);
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.draw(triangleShape);
         g.setColor(Color.MAGENTA);
         for(Rectangle rect:ocar){
             g.fillRect(rect.x,rect.y,rect.width,rect.height);
         }
+
 
     }
     public void actionPerformed(ActionEvent e){
@@ -98,38 +139,22 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
             rect = ocar.get(1);
             if(rect.y+rect.height >HEIGHT){
                 ocar.remove(rect);
-                addOwnCars(false);
+                addOwnCars(0);
             }
         }
 
         repaint();
     }
 
-    public void moveUp(){
-        if(car.y-move <0){
-            System.out.println("\b");
-        }else{
-            car.y -= move;
-        }
-    }
-
-    public void moveDown(){
-        if(car.y+move+car.height >HEIGHT -1){
-            System.out.println("\b");
-        }else{
-            car.y += move;
-        }
-    }
-
     public void moveLeft(){
-        if(car.x-move < WIDTH/2-90){
+        if(car.x-move < 10){
             System.out.println("\b");
         }else{
             car.x -= move;
         }
     }
     public void moveRight(){
-        if(car.x+move>WIDTH/2+10){
+        if(car.x+move>WIDTH-90){
             System.out.println("\b");
         }else{
             car.x += move;
@@ -147,12 +172,6 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     public void keyReleased(KeyEvent e){
         int key = e.getKeyCode();
         switch(key){
-            case KeyEvent.VK_UP:
-                moveUp();
-                break;
-            case KeyEvent.VK_DOWN:
-                moveDown();
-                break;
             case KeyEvent.VK_LEFT:
                 moveLeft();
                 break;
