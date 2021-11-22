@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.Timer;
@@ -21,18 +20,19 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     private int move = 25;
     private int count = 1;
     private ArrayList <Rectangle> ocar;
-    private ArrayList <Triangle> ocar1;
+    private ArrayList <Polygon> ocar1;
     private Rectangle car;
     private Random rand;
-    Timer t;
+    Timer timer;
+    Triangle triangle = new Triangle(395,290,485,290,440,200);
+    //Triangle_Shape triangleShape = new Triangle_Shape(new Point2D.Double(440, 200),
+            //new Point2D.Double(485, 290), new Point2D.Double(395, 290));
 
-    Triangle_Shape triangleShape = new Triangle_Shape(new Point2D.Double(440, 200),
-            new Point2D.Double(485, 290), new Point2D.Double(395, 290));
     public PlayGround(){
-        t = new Timer(3,this);
+        timer = new Timer(3,this);
         rand = new Random();
         ocar = new ArrayList<Rectangle>();
-        ocar1 = new ArrayList<Triangle>();
+        ocar1 = new ArrayList<Polygon>();
         car = new Rectangle(WIDTH/2-90,HEIGHT-100,width,height);
         space =100;
         speed = 1;
@@ -50,7 +50,7 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         addOwnCars(number);
 
 
-        t.start();
+        timer.start();
     }
     public void addOwnCars(int number){
         int positionx = rand.nextInt(20);
@@ -91,11 +91,19 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
 
         if(number == 0||number == 1|| number==2){
             ocar.add(new Rectangle(x,y-100-(ocar.size()*space), Width, Height));
+            Triangle newTriangle = new Triangle(x,y-100-(ocar1.size()*space), x+100,y-100-(ocar1.size()*space),(x+100)/2,y-100-(ocar1.size()*space)-Height);
+            ocar1.add(newTriangle.drawPolygon());
+
         }
         else{
-            //ocar.add( new Rectangle(x,ocar.get(ocar.size()-1).y, Width, Height) );
-           ocar1.add(new Triangle(x,y-100-(ocar1.size()*space), x+Width,y-100-(ocar1.size()*space),(x+Width)/2,y-100-(ocar1.size()*space)-Height));
+
+            //if(ocar.size()>0){
+               // ocar.add( new Rectangle(x,ocar.get(ocar.size()-1).y -300, Width, Height) );
+            //}
+
+           //ocar1.add(new Triangle(x,y-100-(ocar1.size()*space), x+Width,y-100-(ocar1.size()*space),(x+Width)/2,y-100-(ocar1.size()*space)-Height, color));
         }
+
     }
     public void paintComponent(Graphics g){
         super.paintComponents(g);
@@ -106,17 +114,26 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         g.setColor(Color.MAGENTA);
         g.drawRoundRect(110, 200, 90, 90, 200, 200);
         g.drawRect(255,200,90,90);
-        Graphics2D g2d = (Graphics2D) g.create();
-        g2d.draw(triangleShape);
-        g.setColor(Color.MAGENTA);
-        for(Rectangle rect:ocar){
-            g.fillRect(rect.x,rect.y,rect.width,rect.height);
-        }
+        //Graphics2D g2d = (Graphics2D) g.create();
+        //g2d.draw(triangleShape);
+        g.fillPolygon(triangle.drawPolygon());
 
+
+        for(int i=0;i<ocar.size();i++) {
+            g.setColor(Color.MAGENTA);
+            Rectangle rect =  ocar.get(i);
+            g.fillRect(rect.x,rect.y,rect.width,rect.height);
+
+            g.setColor(Color.MAGENTA);
+            Polygon poly = ocar1.get(i);
+            g.fillPolygon(poly);
+
+        }
 
     }
     public void actionPerformed(ActionEvent e){
         Rectangle rect;
+        Polygon polyg;
         count++;
         for(int i =0; i <ocar.size(); i++){
             rect =ocar.get(i);
@@ -127,7 +144,10 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
                 }
             }
             rect.y+=speed;
-
+            polyg = ocar1.get(i);
+            polyg.ypoints[0] += speed;
+            polyg.ypoints[1] += speed;
+            polyg.ypoints[2] += speed;
         }
         //car crashing with oponents
         for(Rectangle r:ocar){
