@@ -1,11 +1,16 @@
 package com.Ngoc;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 import javax.swing.Timer;
@@ -23,12 +28,25 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     private ArrayList <Polygon> ocar1;
     private Rectangle car;
     private Random rand;
-    Timer timer;
-    Triangle triangle = new Triangle(395,290,485,290,440,200);
-    //Triangle_Shape triangleShape = new Triangle_Shape(new Point2D.Double(440, 200),
-            //new Point2D.Double(485, 290), new Point2D.Double(395, 290));
+    BufferedImage rectangle;
+    BufferedImage triangle;
+    BufferedImage circle;
+    BufferedImage star;
+    BufferedImage user;
 
-    public PlayGround(){
+    Timer timer;
+    long startTime;
+    long deadTime = 0;
+    //Triangle triangle = new Triangle(395,290,485,290,440,200);
+    Triangle_Shape triangleShape = new Triangle_Shape(new Point2D.Double(440, 200),
+            new Point2D.Double(485, 290), new Point2D.Double(395, 290));
+
+    public PlayGround() throws IOException {
+        rectangle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\rectangle.png"));
+        triangle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\triangle.png"));
+        star = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\star.png"));
+        circle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\circle.png"));
+        user = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\user.png"));
         timer = new Timer(3,this);
         rand = new Random();
         ocar = new ArrayList<Rectangle>();
@@ -38,70 +56,74 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         speed = 1;
         addKeyListener(this);
         setFocusable(true);
-        int number = rand.nextInt(4);
-        // random 0->4 : 1,2,3,4 mean true(run) . 0 mean false
-        addOwnCars(number);
-        addOwnCars(number);
-        addOwnCars(number);
-        addOwnCars(number);
-        addOwnCars(number);
-        addOwnCars(number);
-        addOwnCars(number);
-        addOwnCars(number);
 
+        addOwnCars(true);
+        addOwnCars(true);
+        addOwnCars(true);
+        addOwnCars(true);
+        addOwnCars(true);
+        addOwnCars(true);
 
         timer.start();
+        this.startTime = System.currentTimeMillis();
     }
-    public void addOwnCars(int number){
+    public void addOwnCars(boolean first){
         int positionx = rand.nextInt(20);
-        int x = 0;
+        int x = 0; // x of rectangle
+        int x2 = 0; // x of polygon
         int y = 0;
         int Height =height;
         int Width =width;
         if(positionx == 0 || positionx == 20){
             x = WIDTH/10;
+            x2 =  WIDTH/10 + 5;
         }
         else if (positionx == 1 || positionx == 19){
             x = 2*WIDTH/10;
+            x2 =  9*WIDTH/10 -5;
         }
         else if(positionx == 2 || positionx == 18){
             x= 3*WIDTH/10;
+            x2 = 8*WIDTH/10;
         }
         else if(positionx == 3 || positionx == 17){
             x= 4*WIDTH/10;
+            x2 = 7*WIDTH/10;
         }
         else if(positionx == 4 || positionx == 16){
             x= 5*WIDTH/10;
+            x2 = 6*WIDTH/10;
         }
         else if(positionx == 5 || positionx == 15){
             x= 6*WIDTH/10;
+            x2 = 5*WIDTH/10;
         }
         else if(positionx == 6|| positionx == 14){
             x= 7*WIDTH/10;
+            x2 = 4*WIDTH/10;
         }
         else if(positionx == 7 || positionx == 13){
             x= 8*WIDTH/10;
+            x2 = 3*WIDTH/10;
         }
         else if(positionx == 8 || positionx == 12){
             x= 9*WIDTH/10 -5;
+            x2 = 2*WIDTH/10;
         }
         else {
             x = WIDTH/10 + 5;
+            x2 = WIDTH/10;
         }
 
-        if(number == 0||number == 1|| number==2){
-            ocar.add(new Rectangle(x,y-100-(ocar.size()*space), Width, Height));
-            Triangle newTriangle = new Triangle(x,y-100-(ocar1.size()*space), x+100,y-100-(ocar1.size()*space),(x+100)/2,y-100-(ocar1.size()*space)-Height);
-            ocar1.add(newTriangle.drawPolygon());
-
+        if(first){
+            ocar.add(new Rectangle(x,y-100-(ocar.size()*space),Width,Height));
         }
         else{
 
-            //if(ocar.size()>0){
-               // ocar.add( new Rectangle(x,ocar.get(ocar.size()-1).y -300, Width, Height) );
-            //}
+            if(ocar.size()>0){
+                ocar.add(new Rectangle(x,ocar.get(ocar.size()-1).y-300,Width,Height));
+            }
 
-           //ocar1.add(new Triangle(x,y-100-(ocar1.size()*space), x+Width,y-100-(ocar1.size()*space),(x+Width)/2,y-100-(ocar1.size()*space)-Height, color));
         }
 
     }
@@ -109,31 +131,44 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         super.paintComponents(g);
         g.setColor(Color.black);
         g.fillRect(0,0,WIDTH,HEIGHT );
-        g.setColor(Color.red);
-        g.fillRect(car.x,car.y,car.width,car.height);
+        g.drawImage(user,car.x,car.y,null);
         g.setColor(Color.MAGENTA);
         g.drawRoundRect(110, 200, 90, 90, 200, 200);
         g.drawRect(255,200,90,90);
-        //Graphics2D g2d = (Graphics2D) g.create();
-        //g2d.draw(triangleShape);
-        g.fillPolygon(triangle.drawPolygon());
-
-
+        Graphics2D g2d = (Graphics2D) g.create();
+        g2d.draw(triangleShape);
+        //g.fillPolygon(triangle.drawPolygon());
         for(int i=0;i<ocar.size();i++) {
-            g.setColor(Color.MAGENTA);
             Rectangle rect =  ocar.get(i);
-            g.fillRect(rect.x,rect.y,rect.width,rect.height);
-
-            g.setColor(Color.MAGENTA);
-            Polygon poly = ocar1.get(i);
-            g.fillPolygon(poly);
-
+            int option = i % 3;
+            if(option == 0){
+                g.drawImage(rectangle,rect.x,rect.y,null);
+            }
+            else if(option == 1){
+                g.drawImage(star,rect.x,rect.y,null);
+            }
+            else if(option == 2){
+                g.drawImage(circle,rect.x,rect.y,null);
+            }
+            else{
+                g.drawImage(triangle,rect.x,rect.y,null);
+            }
         }
-
+        showResult(g);
     }
+
+    private void showResult(Graphics g) {
+        if (deadTime > 0) {
+            long surviveTime = deadTime - this.startTime;
+            g.drawString(String.format("Game over.\nYou survived %.2f seconds", (double) surviveTime / 1000),200,300);
+            timer.stop();
+            repaint();
+        }
+    }
+
+
     public void actionPerformed(ActionEvent e){
         Rectangle rect;
-        Polygon polyg;
         count++;
         for(int i =0; i <ocar.size(); i++){
             rect =ocar.get(i);
@@ -144,22 +179,19 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
                 }
             }
             rect.y+=speed;
-            polyg = ocar1.get(i);
-            polyg.ypoints[0] += speed;
-            polyg.ypoints[1] += speed;
-            polyg.ypoints[2] += speed;
         }
         //car crashing with oponents
         for(Rectangle r:ocar){
             if(r.intersects(car)){
                 car.y = r.y+height;
+                this.deadTime = e.getWhen();
             }
         }
         for(int i = 0; i <ocar.size(); i++){
             rect = ocar.get(1);
             if(rect.y+rect.height >HEIGHT){
                 ocar.remove(rect);
-                addOwnCars(0);
+                addOwnCars(false);
             }
         }
 
@@ -180,6 +212,11 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
             car.x += move;
         }
     }
+
+    // Count Score: Score = millisecond;
+    //public int countScore(){
+
+    //}
     @Override
     public void keyTyped(KeyEvent e){
 
