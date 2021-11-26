@@ -11,8 +11,6 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Random;
 import javax.swing.Timer;
 
 public class PlayGround extends JPanel implements ActionListener, KeyListener {
@@ -21,8 +19,6 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     private int MOVE = 25;
     private int count = 1;
     private int speed = 1;
-    //private ArrayList <Rectangle> obstacle;
-    //private Random rand;
     BufferedImage rectangle;
     BufferedImage triangle;
     BufferedImage circle;
@@ -31,10 +27,10 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     Timer timer;
     long startTime;
     long deadTime = 0;
-    Triangle_Shape triangleShape = new Triangle_Shape(new Point2D.Double(440, 200),
+    TriangleShape triangleShape = new TriangleShape(new Point2D.Double(440, 200),
             new Point2D.Double(485, 290), new Point2D.Double(395, 290));
     Player player = new Player(WIDTH / 2 - 90, HEIGHT - 100, MOVE);
-    Obstacle obstacle = new Obstacle(WIDTH, HEIGHT, MOVE);
+    Obstacle obstacle = new Obstacle(WIDTH);
 
     public PlayGround() throws IOException {
         rectangle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\rectangle.png"));
@@ -64,9 +60,10 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         g.drawRect(255, 200, 90, 90);
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.draw(triangleShape);
+
         for (int i = 0; i < obstacle.getListOfObstacles().size(); i++) {
             Rectangle rect = obstacle.getListOfObstacles().get(i);
-            int option = i % 3;
+            int option = i % 4;
             if (option == 0) {
                 g.drawImage(rectangle, rect.x, rect.y, null);
             } else if (option == 1) {
@@ -107,7 +104,6 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
                 obstacle.addObstacles(false);
             }
         }
-
         repaint();
     }
 
@@ -144,7 +140,5 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
                 break;
         }
     }
-
-
 }
 

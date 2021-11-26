@@ -1,11 +1,8 @@
 package com.Ngoc;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.Random;
-
-import static java.awt.image.ImageObserver.WIDTH;
 
 public class Obstacle {
     private ArrayList<Rectangle> listOfObstacles;
@@ -13,28 +10,15 @@ public class Obstacle {
     private int Height = 35;
     private int Width = 40;
     private int horizontal;
-    private int vertical;
-    private int Move;
     Random rand = new Random();
-    Player player1 = new Player(this.horizontal, this.vertical, Move);
 
-    public Obstacle(int WIDTH, int HEIGHT, int Move) {
-        this.horizontal = WIDTH;
-        this.vertical = HEIGHT;
-        this.Move = Move;
+    public Obstacle(int width) {
+        this.horizontal = width;
         this.listOfObstacles = new ArrayList<>();
     }
 
     public ArrayList<Rectangle> getListOfObstacles() {
         return listOfObstacles;
-    }
-
-    public int getSpace() {
-        return space;
-    }
-
-    public Random getRand() {
-        return rand;
     }
 
     public void addObstacles(boolean first) {
@@ -66,14 +50,10 @@ public class Obstacle {
         if (first) {
             listOfObstacles.add(new Rectangle(x, y - 100 - (listOfObstacles.size() * space), Width, Height));
         } else {
-
             if (listOfObstacles.size() > 0) {
                 listOfObstacles.add(new Rectangle(x, listOfObstacles.get(listOfObstacles.size() - 1).y - 300, Width, Height));
             }
-
         }
-
     }
-
 
 }

@@ -1,15 +1,12 @@
 package com.Ngoc;
 
 import java.awt.*;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 public class Player {
     private Rectangle shape;
     private int width = 40;
     private int height = 35;
     private int move ;
-
 
     public Player(int position_x, int position_y, int move ) {
         this.shape = new Rectangle(position_x,position_y,this.width,this.height);
@@ -42,8 +39,4 @@ public class Player {
             shape.x += move;
         }
     }
-
-
-
-
 }
