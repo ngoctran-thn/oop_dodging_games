@@ -3,7 +3,7 @@ package com.Ngoc;
 import javax.swing.*;
 import java.io.IOException;
 
-public class Car extends JFrame {
+public class Main extends JFrame {
     public static void main(String[] args) throws IOException {
         JFrame app = new JFrame();
         PlayGround playGround = new PlayGround();
