@@ -25,8 +25,7 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     private int move = 25;
     private int count = 1;
     private ArrayList <Rectangle> ocar;
-    private ArrayList <Polygon> ocar1;
-    private Rectangle car;
+    private Rectangle player;
     private Random rand;
     BufferedImage rectangle;
     BufferedImage triangle;
@@ -50,13 +49,11 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         timer = new Timer(3,this);
         rand = new Random();
         ocar = new ArrayList<Rectangle>();
-        ocar1 = new ArrayList<Polygon>();
-        car = new Rectangle(WIDTH/2-90,HEIGHT-100,width,height);
+        player = new Rectangle(WIDTH/2-90,HEIGHT-100,width,height);
         space =100;
         speed = 1;
         addKeyListener(this);
         setFocusable(true);
-
         addOwnCars(true);
         addOwnCars(true);
         addOwnCars(true);
@@ -131,7 +128,7 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         super.paintComponents(g);
         g.setColor(Color.black);
         g.fillRect(0,0,WIDTH,HEIGHT );
-        g.drawImage(user,car.x,car.y,null);
+        g.drawImage(user, player.x, player.y,null);
         g.setColor(Color.MAGENTA);
         g.drawRoundRect(110, 200, 90, 90, 200, 200);
         g.drawRect(255,200,90,90);
@@ -182,8 +179,8 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         }
         //car crashing with oponents
         for(Rectangle r:ocar){
-            if(r.intersects(car)){
-                car.y = r.y+height;
+            if(r.intersects(player)){
+                player.y = r.y+height;
                 this.deadTime = e.getWhen();
             }
         }
@@ -199,17 +196,17 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     }
 
     public void moveLeft(){
-        if(car.x-move < 10){
+        if(player.x-move < 10){
             System.out.println("\b");
         }else{
-            car.x -= move;
+            player.x -= move;
         }
     }
     public void moveRight(){
-        if(car.x+move>WIDTH-90){
+        if(player.x+move>WIDTH-90){
             System.out.println("\b");
         }else{
-            car.x += move;
+            player.x += move;
         }
     }
 
