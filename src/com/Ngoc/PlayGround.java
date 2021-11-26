@@ -160,7 +160,7 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     private void showResult(Graphics g) {
         if (deadTime > 0) {
             long surviveTime = deadTime - this.startTime;
-            g.drawString(String.format("Game over.\nYou survived %.2f seconds", (double) surviveTime / 1000),200,300);
+            g.drawString(String.format("Game over.\nYou survived %.2f seconds", (double) surviveTime / 1000),200,400);
             timer.stop();
             repaint();
         }
