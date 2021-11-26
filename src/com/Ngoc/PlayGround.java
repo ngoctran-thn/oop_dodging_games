@@ -17,29 +17,24 @@ import javax.swing.Timer;
 
 public class PlayGround extends JPanel implements ActionListener, KeyListener {
     private int space;
-    private int width = 40;// chieu rong cua hinh vuong
-    private int height =35;// chieu cao cua hinh vuong
     private int speed;
     private int WIDTH = 600;// chieu rong cua frame
     private int HEIGHT= 700;// chieu cao cua frame
     private int move = 25;
     private int count = 1;
-    private ArrayList <Rectangle> ocar;
-    private Rectangle player;
+    private ArrayList <Rectangle> obstacle;
     private Random rand;
     BufferedImage rectangle;
     BufferedImage triangle;
     BufferedImage circle;
     BufferedImage star;
     BufferedImage user;
-
     Timer timer;
     long startTime;
     long deadTime = 0;
-    //Triangle triangle = new Triangle(395,290,485,290,440,200);
     Triangle_Shape triangleShape = new Triangle_Shape(new Point2D.Double(440, 200),
             new Point2D.Double(485, 290), new Point2D.Double(395, 290));
-
+    Player player = new Player(WIDTH/2-90,HEIGHT-100);
     public PlayGround() throws IOException {
         rectangle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\rectangle.png"));
         triangle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\triangle.png"));
@@ -48,29 +43,28 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         user = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\user.png"));
         timer = new Timer(3,this);
         rand = new Random();
-        ocar = new ArrayList<Rectangle>();
-        player = new Rectangle(WIDTH/2-90,HEIGHT-100,width,height);
+        obstacle = new ArrayList<Rectangle>();
         space =100;
         speed = 1;
         addKeyListener(this);
         setFocusable(true);
-        addOwnCars(true);
-        addOwnCars(true);
-        addOwnCars(true);
-        addOwnCars(true);
-        addOwnCars(true);
-        addOwnCars(true);
+        addObstacles(true);
+        addObstacles(true);
+        addObstacles(true);
+        addObstacles(true);
+        addObstacles(true);
+        addObstacles(true);
 
         timer.start();
         this.startTime = System.currentTimeMillis();
     }
-    public void addOwnCars(boolean first){
+    public void addObstacles(boolean first){
         int positionx = rand.nextInt(20);
         int x = 0; // x of rectangle
         int x2 = 0; // x of polygon
         int y = 0;
-        int Height =height;
-        int Width =width;
+        int Height = player.getHeight();
+        int Width = player.getWidth();
         if(positionx == 0 || positionx == 20){
             x = WIDTH/10;
             x2 =  WIDTH/10 + 5;
@@ -113,12 +107,12 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         }
 
         if(first){
-            ocar.add(new Rectangle(x,y-100-(ocar.size()*space),Width,Height));
+            obstacle.add(new Rectangle(x,y-100-(obstacle.size()*space),Width,Height));
         }
         else{
 
-            if(ocar.size()>0){
-                ocar.add(new Rectangle(x,ocar.get(ocar.size()-1).y-300,Width,Height));
+            if(obstacle.size()>0){
+                obstacle.add(new Rectangle(x,obstacle.get(obstacle.size()-1).y-300,Width,Height));
             }
 
         }
@@ -128,15 +122,14 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         super.paintComponents(g);
         g.setColor(Color.black);
         g.fillRect(0,0,WIDTH,HEIGHT );
-        g.drawImage(user, player.x, player.y,null);
+        g.drawImage(user, player.getShape().x, player.getShape().y,null);
         g.setColor(Color.MAGENTA);
         g.drawRoundRect(110, 200, 90, 90, 200, 200);
         g.drawRect(255,200,90,90);
         Graphics2D g2d = (Graphics2D) g.create();
         g2d.draw(triangleShape);
-        //g.fillPolygon(triangle.drawPolygon());
-        for(int i=0;i<ocar.size();i++) {
-            Rectangle rect =  ocar.get(i);
+        for(int i=0;i<obstacle.size();i++) {
+            Rectangle rect =  obstacle.get(i);
             int option = i % 3;
             if(option == 0){
                 g.drawImage(rectangle,rect.x,rect.y,null);
@@ -167,8 +160,8 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     public void actionPerformed(ActionEvent e){
         Rectangle rect;
         count++;
-        for(int i =0; i <ocar.size(); i++){
-            rect =ocar.get(i);
+        for(int i =0; i <obstacle.size(); i++){
+            rect =obstacle.get(i);
             if(count%1000==0){
                 speed++;
                 if(move<50){
@@ -178,17 +171,17 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
             rect.y+=speed;
         }
         //car crashing with oponents
-        for(Rectangle r:ocar){
-            if(r.intersects(player)){
-                player.y = r.y+height;
-                this.deadTime = e.getWhen();
-            }
-        }
-        for(int i = 0; i <ocar.size(); i++){
-            rect = ocar.get(1);
+        //for(Rectangle r:obstacle){
+            //if(r.intersects(player)){
+                //player.getShape().y = r.y+ player.getHeight();
+                //this.deadTime = e.getWhen();
+           // }
+       // }
+        for(int i = 0; i <obstacle.size(); i++){
+            rect = obstacle.get(1);
             if(rect.y+rect.height >HEIGHT){
-                ocar.remove(rect);
-                addOwnCars(false);
+                obstacle.remove(rect);
+                addObstacles(false);
             }
         }
 
@@ -196,17 +189,17 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     }
 
     public void moveLeft(){
-        if(player.x-move < 10){
+        if(player.getShape().x-move < 10){
             System.out.println("\b");
         }else{
-            player.x -= move;
+            player.getShape().x -= move;
         }
     }
     public void moveRight(){
-        if(player.x+move>WIDTH-90){
+        if(player.getShape().x+move>WIDTH-90){
             System.out.println("\b");
         }else{
-            player.x += move;
+            player.getShape().x += move;
         }
     }
 
