@@ -55,3 +55,7 @@ The class is more complex than `Player` class. So I decided what I need before I
 
 ###PlayGround
 
+### Video demo
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=W4cvH6HLetU
+" target="_blank"><img src="http://img.youtube.com/vi/W4cvH6HLetU/0.jpg"
+alt="Dodging game: Squid game" width="240" height="180" border="10" /></a>
