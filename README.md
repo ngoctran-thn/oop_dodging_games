@@ -4,9 +4,7 @@ The score will be the time you "live" in second.
 
 Advice from the author: Think of it as a simple game until it's out.
 
-![Dodging Game Screenshot](blob/main/images/screenShot.png "Dodging Game Screenshot")
-
-
+![Dodging Game Screenshot](images/screenShot.png "Dodging Game Screenshot")
 
 ## Coding explanation 
 There a 5 class. 
