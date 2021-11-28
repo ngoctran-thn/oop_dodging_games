@@ -37,7 +37,7 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
         triangle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\triangle.png"));
         star = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\star.png"));
         circle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\circle.png"));
-        user = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\user.png"));
+        user = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\face.png"));
         timer = new Timer(3, this);
 
         addKeyListener(this);
