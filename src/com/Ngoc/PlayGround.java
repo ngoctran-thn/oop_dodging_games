@@ -11,6 +11,8 @@ import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import javax.swing.Timer;
 
 public class PlayGround extends JPanel implements ActionListener, KeyListener {
@@ -33,11 +35,13 @@ public class PlayGround extends JPanel implements ActionListener, KeyListener {
     Obstacle obstacle = new Obstacle(WIDTH);
 
     public PlayGround() throws IOException {
-        rectangle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\rectangle.png"));
-        triangle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\triangle.png"));
-        star = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\star.png"));
-        circle = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\circle.png"));
-        user = ImageIO.read(new File("D:\\GoogleDrive\\JavaProgramming\\RacingGame\\images\\face.png"));
+        Path currentRelativePath = Paths.get("");
+        String currentPath = currentRelativePath.toAbsolutePath().toString();
+        rectangle = ImageIO.read(new File(currentPath + "\\images\\rectangle.png"));
+        triangle = ImageIO.read(new File(currentPath + "\\images\\triangle.png"));
+        star = ImageIO.read(new File(currentPath + "\\images\\star.png"));
+        circle = ImageIO.read(new File(currentPath + "\\images\\circle.png"));
+        user = ImageIO.read(new File(currentPath +  "\\images\\face.png"));
         timer = new Timer(3, this);
 
         addKeyListener(this);
