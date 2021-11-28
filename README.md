@@ -54,7 +54,7 @@ The class is more complex than `Player` class. So I decided what I need before I
 
 
 ###PlayGround
-
+PlayGround and interface will be desiged in this class 
 ### Video demo
 <a href="http://www.youtube.com/watch?feature=player_embedded&v=W4cvH6HLetU
 " target="_blank"><img src="http://img.youtube.com/vi/W4cvH6HLetU/0.jpg"
